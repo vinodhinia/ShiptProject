@@ -21,8 +21,8 @@ class ProductResource(Resource):
             return {'message' : 'product not found'}, 404
 
 
-    def post(self,id):
-        product_records = request.json['product']
+    def post(self, id):
+        product_records = request.json['products']
         # import pdb;pdb.set_trace()
         product = Product(product_records['name'], product_records['price'])
         category_list = product_records['category_id']
@@ -34,9 +34,9 @@ class ProductResource(Resource):
 
         return {'message' : 'Product Created Successfully'}
 
-    def put(self, id):
+    def put(self):
         data = ProductResource.parser.parse_args()
-        product = Product.find_by_id(id)
+        product = Product.find_by_id(data['id'])
         if not product:
             return {'message' : "Prodcut with id: '{}' does not exist. Please create the Product first ".format(id)}
         else:

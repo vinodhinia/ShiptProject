@@ -9,19 +9,19 @@ class CategoryResource(Resource):
                         required = True,
                         help = "This field cannot be blank")
 
-    def get(self, id):
+    def get(self,id):
         category = Category.find_by_id(id)
         if category:
             return category.json()
-        return {'message' : 'category not found'}
+        return {'message' : 'category NOT found'}
 
-    def post(self, id):
+    def post(self,id):
         data = CategoryResource.parser.parse_args()
         category = Category(data['name'])
         category.save_to_db()
-        return {'message' : 'Category created Successfully'}, 200
+        return {'message' : 'Success'}, 200
 
-    def put(self, id):
+    def put(self,id):
         data = CategoryResource.parser.parse_args()
         category =  Category.find_by_id(id)
         if not category:

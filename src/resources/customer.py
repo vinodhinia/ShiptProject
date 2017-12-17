@@ -22,7 +22,7 @@ class CustomerResource(Resource):
             return customer.json()
         return {'message' : 'Customer cannot be found'}, 404
 
-    def post(self, id):
+    def post(self,id):
         data = CustomerResource.parser.parse_args()
         customer = Customer(data['first_name'], data['last_name'], data['address'])
         customer.save_to_db()
@@ -45,3 +45,10 @@ class CustomerResource(Resource):
 class CustomerListResource(Resource):
     def get(self):
         return {'customer' :  list(map(lambda customer: customer.json(), Customer.query.all()))}
+
+class CustomerOrderResource(Resource):
+    def get(self, id):
+        import pdb;pdb.set_trace()
+        customer_order = Customer.find_by_id(id)
+        return{'customer_order': list(map(lambda customer_order: customer_order.json(), customer_order.orders))}
+      #  return {'customer_order' : customer_order.orders}

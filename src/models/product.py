@@ -1,12 +1,12 @@
 from db import db
 import json
 categories = db.Table('product_category',
-                    db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True),
-                    db.Column('category_id', db.Integer, db.ForeignKey('category.id'), primary_key=True)
+                    db.Column('product_id', db.Integer, db.ForeignKey('products.id'), primary_key=True),
+                    db.Column('category_id', db.Integer, db.ForeignKey('categories.id'), primary_key=True)
                     )
 
 class Product(db.Model):
-    __tabelname__ = 'products'
+    __tablename__ = 'products'
 
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(80))
@@ -14,6 +14,8 @@ class Product(db.Model):
 
     categories = db.relationship('Category', secondary=categories, lazy='subquery',
         backref=db.backref('productes', lazy=True))
+
+    orders = db.relationship("OrderProduct", back_populates="product")
 
 
     def __init__(self, name, price):

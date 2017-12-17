@@ -1,14 +1,14 @@
 from db import db
 
 class Customer(db.Model):
-    __tablename__ = 'customer'
+    __tablename__ = 'customers'
 
     id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
     address = db.Column(db.String(100))
 
-    orders = db.relationship('Order', lazy='dynamic')
+    orders = db.relationship('Order', lazy='dynamic', back_populates = 'customer')
 
     def __init__(self, first_name, last_name, address):
         self.first_name = first_name

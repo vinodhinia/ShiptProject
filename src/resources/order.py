@@ -1,8 +1,11 @@
 from flask_restful import Resource, reqparse
 
-from models.order import Order
+from models.order import Order,OrderProduct
 from models.product import Product
+#from models.customer import Customer
 from flask import Flask, request
+from models.order import AlchemyEncoder
+import json
 
 class OrderResource(Resource):
     parser = reqparse.RequestParser()
@@ -19,13 +22,21 @@ class OrderResource(Resource):
         return {'message' : 'Order does not exist'}
 
     def post(self, id):
+        import pdb;pdb.set_trace()
         order_request = request.json['orders']
         order = Order(order_request['status'], order_request['date'], order_request['customer_id'])
         product_list = order_request['products']
+
+        # customer = Customer.find_by_id(order_request['customer_id'])
         for prod in product_list:
-            product = Product.find_by_id(prod)
-            order.products.append(product)
+            product = Product.find_by_id(prod['id'])
+            order_product = OrderProduct(prod['quantity'], int(prod['quantity'])*product.price)
+            order_product.product = product
+            order.products.append(order_product)
         order.save_to_db()
+        import pdb;pdb.set_trace()
+        # customer.orders.append(order)
+        # customer.save_to_db()
         return {'message': 'Order created successfully'}  # DATE shoulb be taken care
 
 
