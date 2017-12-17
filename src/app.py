@@ -1,11 +1,11 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 from resources.category import CategoryResource, CategoryListResource
 from resources.customer import CustomerResource, CustomerListResource, CustomerOrderResource
 from resources.order import OrderResource, OrderListResource
-from resources.product import ProductResource, ProductListResource
+from resources.product import ProductResource, ProductListResource, ProductSalesResource
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://shipt:shipt123@localhost/shipt_project' #mysql://username:password@server/db
@@ -30,8 +30,17 @@ api.add_resource(CustomerListResource, '/customers') #GET all the customers in t
 api.add_resource(OrderResource, '/order/<int:id>') #GET Order by ID
 api.add_resource(OrderListResource, '/orders')  #GET all the the Orders in the database
 
-api.add_resource(CustomerOrderResource,'/customer/order/<int:id>')
+api.add_resource(CustomerOrderResource,'/customer/<int:id>/orders')
 
+api.add_resource(ProductSalesResource, '/aggregate/product/')
+
+
+#api.add_resource(ProductSalesResource, '/product/sold?fromdate={from_date}&todate={to_date}&type={}')
+#http://example.com/users/12345/bids?start=01-01-2012&end=01-31-2012
+
+# Methods:
+# Kwargs
+# parser add_argument
 
 if __name__ == '__main__':
     from db import db

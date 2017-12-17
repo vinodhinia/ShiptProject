@@ -1,8 +1,10 @@
 from flask_restful import Resource, reqparse
 import json
-from flask import Flask, request
+import flask
+from flask import Flask, request, jsonify, stream_with_context
 
-from models.product import Product
+from models.product import Product, AlchemyEncoder
+from models.order import Order, OrderProduct
 from models.category import Category
 
 class ProductResource(Resource):
@@ -48,3 +50,68 @@ class ProductResource(Resource):
 class ProductListResource(Resource):
     def get(self):
         return {'product': list(map(lambda product: product.json(), Product.query.all()))}
+
+class ProductSalesResource(Resource):
+
+    def get(self):
+        import os
+        accept_type = request.headers['ACCEPT']
+        file_name = 'output.csv'
+        file_path = '/home/vinu/TakeHomeProjects'
+        dirname = os.path.dirname(os.path.join(file_path,file_name))
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+
+        w_file = open(os.path.join(file_path,file_name), 'w')
+        w_file.write('your data headers separated by commas \n')
+
+        args = request.args
+        from_date = args['from_date']
+        to_date = args['to_date']
+        breakdown_by = args['breakdown_by']
+
+        from db import db
+        print "Quering "
+        if breakdown_by.lower() == 'day':
+            breakdown_type = Order.date
+        elif breakdown_by.lower() == 'week':
+            breakdown_type = db.func.concat(db.func.week(Order.date), "-", db.func.year(Order.date))
+        else:
+            breakdown_type = db.func.concat(db.func.month(Order.date), "-", db.func.year(Order.date))
+
+        product = db.session.query(
+            Product.id,
+            Product.name,
+            db.func.sum(OrderProduct.quantity),
+            breakdown_type)\
+            .join(OrderProduct)\
+            .join(Order)\
+            .filter(Order.date.between(from_date, to_date))\
+            .group_by(Product.id, breakdown_type)
+
+        products_json = []
+        csv_file = ""
+        if product:
+            for prod in product:
+                prod_as_string = str(prod)
+                w_file.write(prod_as_string[1:-1] + '\n')
+                csv_file += prod_as_string[1:-1] + '\n'
+                prod_json = {
+                    'product_id' : prod[0],
+                    'product_name' :prod[1],
+                    'quantity': prod[2],
+                    breakdown_by: prod[3]
+                }
+                products_json.append(prod_json)
+            import pdb;pdb.set_trace()
+            w_file.close()
+            w_file = open(os.path.join(file_path,file_name), 'r')
+            file_size = len(w_file.read())
+            print "File size",file_size
+
+        if str(accept_type) =='text/csv':
+            print "Accept Type : tex/csv"
+            response = flask.make_response(csv_file)
+            response.headers['content-type'] = 'application/octet-stream'
+            return response
+        return products_json
