@@ -29,7 +29,7 @@ class OrderResource(Resource):
             order_product.product = product
             order.products.append(order_product)
         order.save_to_db()
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
 
         return {'message': 'Order created successfully'}
 

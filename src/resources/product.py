@@ -18,6 +18,7 @@ class ProductResource(Resource):
     parser.add_argument('category_id')
 
     def get(self, id):
+        #GET the Product by Id
         product = Product.find_by_id(id)
         if product:
             return product.json()
@@ -26,6 +27,7 @@ class ProductResource(Resource):
 
 
     def post(self, id):
+        #POST/ CREATE the product
         product_records = request.json['products']
         product = Product(product_records['name'], product_records['price'])
         category_list = product_records['category_id']
@@ -116,3 +118,6 @@ class ProductSalesResource(Resource):
             response.mimetype = 'text/csv'
             return response
         return products_json
+
+
+

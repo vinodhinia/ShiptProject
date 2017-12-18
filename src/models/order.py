@@ -79,3 +79,10 @@ class Order(db.Model):
         db.session.add(self)
         db.session.commit()
 
+
+
+
+#select orders.id as Order_ID, products.id as Product_id, products.name from orders inner join order_product on orders.id = order_product.order_id inner join products on products.id = order_product.product_id group by orders.id, products.id;
+#select orders.id as Order_ID, products.id as Product_id, products.name from orders inner join order_product on orders.id = order_product.order_id inner join products on products.id = order_product.product_id group by orders.id, products.id;
+
+
