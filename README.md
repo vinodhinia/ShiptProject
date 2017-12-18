@@ -1,13 +1,13 @@
-Folders
-  seed
-  src
-    models
-    resources
-  tests
+**Folders**
+- seed
+- src
+  - models
+  - resources
+  - tests
 
-seed
+**seed**
 Contains the sample data to populate the database
 
-src
+**src**
 src contains the actual logic for the project
 
