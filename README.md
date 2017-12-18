@@ -11,3 +11,5 @@
 **src**
 - src contains the actual logic for the project
 
+**app.py**
+- Contains the URL endpoints.
