@@ -38,9 +38,6 @@ class OrderProduct(db.Model):
     product = db.relationship("Product", back_populates="orders")
     order = db.relationship("Order", back_populates="products")
 
-    # product = db.relationship("Product", backref="parent_associations")
-    # order = db.relationship("Order", backref="child_associations")
-
     def __init__(self, quantity, cost=0):
         self.quantity = quantity
         self.cost = cost
@@ -63,7 +60,14 @@ class Order(db.Model):
         self.customer_id = customer_id
 
     def json(self):
-        return {'id':self.id, 'status' : self.status._name_ , 'date' : self.date.strftime('%Y-%m-%d'), 'customer_id' : self.customer_id}
+        import pdb;pdb.set_trace()
+        order_product = self.products
+        order_products = []
+
+        for op in order_product:
+            order_products.append(int(op.product_id))
+        return {'id':self.id, 'status' : self.status._name_ , 'date' : self.date.strftime('%Y-%m-%d'), 'customer_id' : self.customer_id, 'products': order_products}
+
 
 
     @classmethod

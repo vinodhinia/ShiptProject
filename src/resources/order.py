@@ -22,7 +22,6 @@ class OrderResource(Resource):
         return {'message' : 'Order does not exist'}
 
     def post(self, id):
-        import pdb;pdb.set_trace()
         order_request = request.json['orders']
         order = Order(order_request['status'], order_request['date'], order_request['customer_id'])
         product_list = order_request['products']

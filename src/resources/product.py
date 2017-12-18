@@ -1,11 +1,13 @@
-from flask_restful import Resource, reqparse
-import json
-import flask
-from flask import Flask, request, jsonify, stream_with_context
+import StringIO
+import csv
 
-from models.product import Product, AlchemyEncoder
-from models.order import Order, OrderProduct
+import flask
+from flask import request
+from flask_restful import Resource, reqparse
 from models.category import Category
+from models.order import Order, OrderProduct
+from models.product import Product
+
 
 class ProductResource(Resource):
     parser = reqparse.RequestParser()
@@ -90,28 +92,28 @@ class ProductSalesResource(Resource):
             .group_by(Product.id, breakdown_type)
 
         products_json = []
-        csv_file = ""
+        csv_file = StringIO.StringIO()
+
+        writer = csv.writer(csv_file, quoting=csv.QUOTE_NONNUMERIC)
+        writer.writerow(['product_id', 'product_name', 'quantity_sold', breakdown_by])
+
         if product:
             for prod in product:
-                prod_as_string = str(prod)
-                w_file.write(prod_as_string[1:-1] + '\n')
-                csv_file += prod_as_string[1:-1] + '\n'
+
+                writer.writerow([r for r in prod])
+
                 prod_json = {
                     'product_id' : prod[0],
                     'product_name' :prod[1],
-                    'quantity': prod[2],
+                    'quantity_sold': prod[2],
                     breakdown_by: prod[3]
                 }
                 products_json.append(prod_json)
-            import pdb;pdb.set_trace()
-            w_file.close()
-            w_file = open(os.path.join(file_path,file_name), 'r')
-            file_size = len(w_file.read())
-            print "File size",file_size
+
 
         if str(accept_type) =='text/csv':
-            print "Accept Type : tex/csv"
-            response = flask.make_response(csv_file)
-            response.headers['content-type'] = 'application/octet-stream'
+            response = flask.make_response(csv_file.getvalue())
+            response.headers['Content-Disposition'] = 'attachment;  filename=output.csv'
+            response.mimetype = 'text/csv'
             return response
         return products_json
