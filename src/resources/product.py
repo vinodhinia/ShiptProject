@@ -27,7 +27,6 @@ class ProductResource(Resource):
 
     def post(self, id):
         product_records = request.json['products']
-        # import pdb;pdb.set_trace()
         product = Product(product_records['name'], product_records['price'])
         category_list = product_records['category_id']
         for c in category_list:

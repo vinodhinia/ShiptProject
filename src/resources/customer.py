@@ -51,4 +51,3 @@ class CustomerOrderResource(Resource):
         import pdb;pdb.set_trace()
         customer_order = Customer.find_by_id(id)
         return{'customer_order': list(map(lambda customer_order: customer_order.json(), customer_order.orders))}
-      #  return {'customer_order' : customer_order.orders}

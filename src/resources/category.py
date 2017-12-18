@@ -1,6 +1,4 @@
 from flask_restful import Resource, reqparse
-# from flask_jwt import jwt_require
-
 from models.category import Category
 
 class CategoryResource(Resource):
