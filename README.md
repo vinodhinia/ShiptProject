@@ -3,7 +3,10 @@
 - src
   - models
   - resources
-  - tests
+  - app.py
+- tests
+
+
 
 **seed**
 - Contains the sample data to populate the database
