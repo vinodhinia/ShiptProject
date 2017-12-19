@@ -50,14 +50,12 @@ class CustomerListResource(Resource):
 
 class CustomerOrderResource(Resource):
     def get(self, id):
-        # import pdb;pdb.set_trace()
         customer_order = Customer.find_by_id(id)
         return{'customer_order': list(map(lambda customer_order: customer_order.json(), customer_order.orders))}
 
 class CustomersOrdersResource(Resource):
     def get(self):
         from db import db
-
         sql = text('SELECT  customers.id, customers.first_name,'
                    ' categories.id, categories.name,  SUM(order_product.quantity) '
                    'FROM customers '
