@@ -18,6 +18,7 @@ db = SQLAlchemy(app)
 def create_tables():
     db.create_all()
 
+#Basic APIs
 api.add_resource(ProductResource, '/product/<int:id>') # GET by product id.  POST/CREATE a product in database
 api.add_resource(ProductListResource, '/products') # GET all the products on PRODUCT table
 

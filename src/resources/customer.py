@@ -1,9 +1,7 @@
 from flask_restful import Resource, reqparse
 
 from models.customer import Customer
-from models.category import Category
-from models.product import Product
-from models.order import Order, OrderProduct
+from sqlalchemy import text
 
 
 class CustomerResource(Resource):
@@ -59,25 +57,25 @@ class CustomerOrderResource(Resource):
 class CustomersOrdersResource(Resource):
     def get(self):
         from db import db
-        customers_orders = db.session.query(Order.id,Product.id, Product.name,
-                                           Category.id, Category.name, Customer.id, Customer.first_name, OrderProduct.quantity)\
-            .join(OrderProduct)\
-            .join(Product) \
-            .join(Category, Product.categories)\
-            .join(Customer, Order.customer)\
-            .group_by(Order.id, Product.id, Category.id)
 
-        customers_orders_list = []
+        sql = text('SELECT  customers.id, customers.first_name,'
+                   ' categories.id, categories.name,  SUM(order_product.quantity) '
+                   'FROM customers '
+                   'INNER JOIN orders on customers.id = orders.customer_id '
+                   'INNER JOIN order_product ON orders.id = order_product.order_id '
+                   'INNER JOIN products on products.id = order_product.product_id '
+                   'INNER JOIN product_category on products.id = product_category.product_id '
+                   'INNER JOIN categories ON categories.id = product_category.category_id '
+                   'GROUP BY customers.id, categories.id;')
+        result = db.engine.execute(sql)
+        customers_orders = []
+        for row in result:
+            customer_order = {
+                'customer_id' :int(row[0]),
+                'customer_name' : str(row[1]), 'category_id': int(row[2]),
+                'category_name': str(row[3]) , 'quantity' :int(row[4]) }
+            customers_orders.append(customer_order)
 
-        for customer_order_obj in customers_orders:
-            print customer_order_obj
-            customers_orders_dict = {
-                'customer_id' : customer_order_obj[5],
-                'customer_name' : customer_order_obj[6],
-                'category_id' : customer_order_obj[3],
-                'category_name' : customer_order_obj[4],
-                'quantity' : customer_order_obj[7]
-            }
-            customers_orders_list.append(customers_orders_dict)
-        return customers_orders_list
+        return customers_orders
+
 
