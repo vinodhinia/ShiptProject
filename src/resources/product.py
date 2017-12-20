@@ -55,7 +55,6 @@ class ProductListResource(Resource):
         category_list = product_records['category_id']
         for c in category_list:
             category = Category.find_by_id(c)
-            # import pdb;pdb.set_trace()
             product.categories.append(category)
         product.save_to_db()
 
@@ -64,16 +63,8 @@ class ProductListResource(Resource):
 class ProductSalesResource(Resource):
 
     def get(self):
+        import pdb; pdb.set_trace()
         accept_type = request.headers['ACCEPT']
-        file_name = 'output.csv'
-        file_path = '/home/vinu/TakeHomeProjects'
-        dirname = os.path.dirname(os.path.join(file_path,file_name))
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-
-        w_file = open(os.path.join(file_path,file_name), 'w')
-        w_file.write('your data headers separated by commas \n')
-
         args = request.args
         from_date = args['from_date']
         to_date = args['to_date']

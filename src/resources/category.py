@@ -1,8 +1,5 @@
 from flask_restful import Resource, reqparse
-from flask import Flask
 from models.category import Category
-from flask_restful_swagger_2 import swagger
-
 
 class CategoryResource(Resource):
     def get(self,id):

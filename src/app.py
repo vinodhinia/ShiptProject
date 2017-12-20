@@ -33,8 +33,8 @@ api.add_resource(OrderListResource, '/orders')  #GET all the the Orders in the d
 
 api.add_resource(CustomerOrderResource,'/customer/<int:id>/orders')
 
-api.add_resource(ProductSalesResource, '/aggregate/product/')
-api.add_resource(CustomersOrdersResource, '/customers/orders/')
+api.add_resource(ProductSalesResource, '/aggregate/product')
+api.add_resource(CustomersOrdersResource, '/customers/orders')
 
 
 if __name__ == '__main__':
