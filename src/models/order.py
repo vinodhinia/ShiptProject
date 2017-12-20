@@ -1,7 +1,6 @@
 from db import db
 import enum
 import json
-import datetime
 
 from sqlalchemy.ext.declarative import DeclarativeMeta
 class AlchemyEncoder(json.JSONEncoder):

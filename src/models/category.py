@@ -1,5 +1,4 @@
 from db import db
-from flask.ext.restful_swagger_2 import Schema
 
 class Category(db.Model):
     __tablename__ = 'categories'
