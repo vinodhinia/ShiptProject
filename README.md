@@ -33,7 +33,7 @@
   - All Customers Orders
     - http://localhost/customers/orders/ GETs all the orders placed by all the customers.
   - Aggregate of Products sold grouped by category
-    - http://localhost/aggregate/product/ GETs the aggregate of all the products by category.
+    - http://localhost/aggregate/product?from_date={}&to_date={}&breakdown_by={} GETs the aggregate of all the products by category.
 
 **Additional Questions**
 - We want to give customers the ability to create lists of products for one-click ordering of bulk items. How would you design the tables, what are the pros and cons of your approach?

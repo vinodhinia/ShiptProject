@@ -7,10 +7,10 @@ APP_URL = '{}:{}'.format(APP_HOST,APP_PORT)
 
 
 #API End Points
-CATEGORY_API_END_POINT = '{}/{}'.format(APP_URL,'category/1')
-PRODUCT_API_END_POINT = '{}/{}'.format(APP_URL,'product/1')
-CUSTOMER_API_END_POINT = '{}/{}'.format(APP_URL,'customer/1')
-ORDER_API_END_POINT = '{}/{}'.format(APP_URL,'order/1')
+CATEGORY_API_END_POINT = '{}/{}'.format(APP_URL,'categories')
+PRODUCT_API_END_POINT = '{}/{}'.format(APP_URL,'products')
+CUSTOMER_API_END_POINT = '{}/{}'.format(APP_URL,'customers')
+ORDER_API_END_POINT = '{}/{}'.format(APP_URL,'orders')
 
 
 
