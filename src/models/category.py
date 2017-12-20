@@ -1,4 +1,5 @@
 from db import db
+from flask.ext.restful_swagger_2 import Schema
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -20,3 +21,4 @@ class Category(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
+

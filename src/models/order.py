@@ -60,7 +60,6 @@ class Order(db.Model):
         self.customer_id = customer_id
 
     def json(self):
-        import pdb;pdb.set_trace()
         order_product = self.products
         order_products = []
 
@@ -75,7 +74,7 @@ class Order(db.Model):
         return cls.query.filter_by(id = _id).first()
 
     def save_to_db(self):
-        import pdb;pdb.set_trace()
+        #import pdb;pdb.set_trace()
         db.session.add(self)
         db.session.commit()
 

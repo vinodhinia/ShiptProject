@@ -24,12 +24,6 @@ class CustomerResource(Resource):
             return customer.json()
         return {'message' : 'Customer cannot be found'}, 404
 
-    def post(self,id):
-        data = CustomerResource.parser.parse_args()
-        customer = Customer(data['first_name'], data['last_name'], data['address'])
-        customer.save_to_db()
-        return customer.json()
-
 
     def put(self, id):
         data = CustomerResource.parser.parse_args()
@@ -45,8 +39,28 @@ class CustomerResource(Resource):
             return customer.json()
 
 class CustomerListResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('first_name',
+                        required = True,
+                        help = "This field cannot be blank")
+
+    parser.add_argument('last_name',
+                        required=True,
+                        help="This field cannot be blank")
+
+    parser.add_argument('address',
+                        required=True,
+                        help="This field cannot be blank")
+
     def get(self):
         return {'customer' :  list(map(lambda customer: customer.json(), Customer.query.all()))}
+
+    def post(self):
+        data = CustomerResource.parser.parse_args()
+        customer = Customer(data['first_name'], data['last_name'], data['address'])
+        customer.save_to_db()
+        return customer.json()
+
 
 class CustomerOrderResource(Resource):
     def get(self, id):

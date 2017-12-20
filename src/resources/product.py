@@ -7,6 +7,7 @@ from flask_restful import Resource, reqparse
 from models.category import Category
 from models.order import Order, OrderProduct
 from models.product import Product
+import os
 
 
 class ProductResource(Resource):
@@ -25,20 +26,6 @@ class ProductResource(Resource):
         else:
             return {'message' : 'product not found'}, 404
 
-
-    def post(self, id):
-        #POST/ CREATE the product
-        product_records = request.json['products']
-        product = Product(product_records['name'], product_records['price'])
-        category_list = product_records['category_id']
-        for c in category_list:
-            category = Category.find_by_id(c)
-            # import pdb;pdb.set_trace()
-            product.categories.append(category)
-        product.save_to_db()
-
-        return {'message' : 'Product Created Successfully'}
-
     def put(self):
         data = ProductResource.parser.parse_args()
         product = Product.find_by_id(data['id'])
@@ -51,13 +38,32 @@ class ProductResource(Resource):
 
 
 class ProductListResource(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('name')
+
+    parser.add_argument('price')
+
+    parser.add_argument('category_id')
+
     def get(self):
         return {'product': list(map(lambda product: product.json(), Product.query.all()))}
+
+    def post(self):
+        #POST/ CREATE the product
+        product_records = request.json['products']
+        product = Product(product_records['name'], product_records['price'])
+        category_list = product_records['category_id']
+        for c in category_list:
+            category = Category.find_by_id(c)
+            # import pdb;pdb.set_trace()
+            product.categories.append(category)
+        product.save_to_db()
+
+        return {'message' : 'Product Created Successfully'}
 
 class ProductSalesResource(Resource):
 
     def get(self):
-        import os
         accept_type = request.headers['ACCEPT']
         file_name = 'output.csv'
         file_path = '/home/vinu/TakeHomeProjects'
@@ -74,7 +80,6 @@ class ProductSalesResource(Resource):
         breakdown_by = args['breakdown_by']
 
         from db import db
-        print "Quering "
         if breakdown_by.lower() == 'day':
             breakdown_type = Order.date
         elif breakdown_by.lower() == 'week':
@@ -110,7 +115,6 @@ class ProductSalesResource(Resource):
                     breakdown_by: prod[3]
                 }
                 products_json.append(prod_json)
-
 
         if str(accept_type) =='text/csv':
             response = flask.make_response(csv_file.getvalue())

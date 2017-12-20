@@ -29,8 +29,8 @@
     - http://localhost/products - GET all the Orders in the database
     - http://localhost/product/id - GET Order by Id. POST/CREATE a Order in the database
   - CustomerOrders
-    - http://localhost/products/customer/<int:id>/orders GETs all the Orders placed by the customer
-  - All Customers Ordes
+    - http://localhost/customer/{id}/orders GETs all the Orders placed by the customer
+  - All Customers Orders
     - http://localhost/customers/orders/ GETs all the orders placed by all the customers.
   - Aggregate of Products sold grouped by category
     - http://localhost/aggregate/product/ GETs the aggregate of all the products by category.
