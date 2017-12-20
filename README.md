@@ -1,11 +1,10 @@
 ## Project Host URL ##
 [Host](http://ec2-52-41-196-53.us-west-2.compute.amazonaws.com/)
 
-##API Documentation##
-
+## API Documentation ##
 [Documentation](https://documenter.getpostman.com/view/1637657/shipttakehomeproject/7LkgPTD)
 
-**Folders**
+#### Folders ####
 - seed
 - src
   - models
