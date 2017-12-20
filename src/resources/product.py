@@ -7,7 +7,6 @@ from flask_restful import Resource, reqparse
 from models.category import Category
 from models.order import Order, OrderProduct
 from models.product import Product
-import os
 
 
 class ProductResource(Resource):
@@ -30,7 +29,7 @@ class ProductResource(Resource):
         data = ProductResource.parser.parse_args()
         product = Product.find_by_id(data['id'])
         if not product:
-            return {'message' : "Prodcut with id: '{}' does not exist. Please create the Product first ".format(id)}
+            return {'message' : "Product with id: '{}' does not exist. Please create the Product first ".format(id)}
         else:
             product.price = data['price']
             product.save_to_db()
@@ -63,7 +62,6 @@ class ProductListResource(Resource):
 class ProductSalesResource(Resource):
 
     def get(self):
-        import pdb; pdb.set_trace()
         accept_type = request.headers['ACCEPT']
         args = request.args
         from_date = args['from_date']
@@ -102,7 +100,7 @@ class ProductSalesResource(Resource):
                 prod_json = {
                     'product_id' : prod[0],
                     'product_name' :prod[1],
-                    'quantity_sold': prod[2],
+                    'quantity_sold': round(prod[2], 2),
                     breakdown_by: prod[3]
                 }
                 products_json.append(prod_json)

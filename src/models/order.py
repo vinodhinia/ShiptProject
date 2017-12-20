@@ -1,24 +1,5 @@
 from db import db
 import enum
-import json
-
-from sqlalchemy.ext.declarative import DeclarativeMeta
-class AlchemyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj.__class__, DeclarativeMeta):
-            # an SQLAlchemy class
-            fields = {}
-            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
-                data = obj.__getattribute__(field)
-                try:
-                    json.dumps(data) # this will fail on non-encodable values, like other classes
-                    fields[field] = data
-                except TypeError:
-                    fields[field] = None
-            # a json-encodable dict
-            return fields
-
-        return json.JSONEncoder.default(self, obj)
 
 class Status(enum.Enum):
     WAITING_FOR_SHIPPING =1
@@ -27,12 +8,13 @@ class Status(enum.Enum):
 
 
 class OrderProduct(db.Model):
+    '''order_product table'''
     __tablename__ = 'order_product'
 
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), primary_key=True)
-    quantity = db.Column(db.Float)
-    cost = db.Column(db.Float)
+    quantity = db.Column(db.Numeric(10,2))
+    cost = db.Column(db.Numeric(10,2))
 
     product = db.relationship("Product", back_populates="orders")
     order = db.relationship("Order", back_populates="products")
@@ -42,6 +24,7 @@ class OrderProduct(db.Model):
         self.cost = cost
 
 class Order(db.Model):
+    '''orders table'''
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key = True)
@@ -66,21 +49,14 @@ class Order(db.Model):
             order_products.append(int(op.product_id))
         return {'id':self.id, 'status' : self.status._name_ , 'date' : self.date.strftime('%Y-%m-%d'), 'customer_id' : self.customer_id, 'products': order_products}
 
-
-
     @classmethod
     def find_by_id(cls, _id):
+        '''Find Order by ID and return Order Instance'''
         return cls.query.filter_by(id = _id).first()
 
     def save_to_db(self):
-        #import pdb;pdb.set_trace()
+        '''Persist Order information in Database'''
         db.session.add(self)
         db.session.commit()
-
-
-
-
-#select orders.id as Order_ID, products.id as Product_id, products.name from orders inner join order_product on orders.id = order_product.order_id inner join products on products.id = order_product.product_id group by orders.id, products.id;
-#select orders.id as Order_ID, products.id as Product_id, products.name from orders inner join order_product on orders.id = order_product.order_id inner join products on products.id = order_product.product_id group by orders.id, products.id;
 
 

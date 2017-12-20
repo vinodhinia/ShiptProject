@@ -1,6 +1,7 @@
 from db import db
 
 class Customer(db.Model):
+    '''customers table'''
     __tablename__ = 'customers'
 
     id = db.Column(db.Integer, primary_key = True)
@@ -20,14 +21,17 @@ class Customer(db.Model):
 
     @classmethod
     def find_by_id(cls, _id):
+        '''Find Customer by ID and return Customer Instance'''
         return cls.query.filter_by(id = _id).first()
 
     @classmethod
     def find_by_name(cls, name):
+        '''Find Customer by name'''
         return cls.query.filter_by(name = name).first()
 
 
     def save_to_db(self):
+        '''Save Customer to the Database'''
         db.session.add(self)
         db.session.commit()
 

@@ -23,7 +23,7 @@ product_data = [
 	},
     {
  		"name" : "Banana",
-		"price" : 6.99,
+		"price" : 6.9238309,
 		"category_id" : [1,2]
     },
     {
@@ -81,6 +81,50 @@ order_data =  [{
 			"id":4,
 			"quantity" : 3
 		}]
+	},{
+		"status" : "DELIVERED",
+		"date": "2015-04-10",
+		"customer_id" : 3,
+		"products" : [{
+			"id":2,
+			"quantity" : 4
+		}, {
+			"id":4,
+			"quantity" : 3
+		}]
+	},{
+		"status" : "DELIVERED",
+		"date": "2015-10-20",
+		"customer_id" : 1,
+		"products" : [{
+			"id":3,
+			"quantity" : 3
+		}, {
+			"id":4,
+			"quantity" : 4
+		}]
+	},{
+		"status" : "DELIVERED",
+		"date": "2015-11-20",
+		"customer_id" : 2,
+		"products" : [{
+			"id":2,
+			"quantity" : 3
+		}, {
+			"id":1,
+			"quantity" : 4
+		}]
+	},{
+		"status" : "DELIVERED",
+		"date": "2015-08-20",
+		"customer_id" : 3,
+		"products" : [{
+			"id":2,
+			"quantity" : 3
+		}, {
+			"id":1,
+			"quantity" : 4
+		}]
 	}
 ]
 
@@ -88,6 +132,7 @@ order_data =  [{
 #Create Categories
 
 for category in category_data:
+	#import pdb;pdb.set_trace()
 	r = requests.post(CATEGORY_API_END_POINT,data=category)
 	if r.status_code != requests.status_codes.codes.OK:
 		raise Exception("Category seeding failed")

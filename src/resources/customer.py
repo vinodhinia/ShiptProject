@@ -19,6 +19,7 @@ class CustomerResource(Resource):
                         help="This field cannot be blank")
 
     def get(self, id):
+        '''Get Customer information by ID'''
         customer = Customer.find_by_id(id)
         if customer:
             return customer.json()
@@ -26,6 +27,7 @@ class CustomerResource(Resource):
 
 
     def put(self, id):
+        '''Update the Customer information by ID'''
         data = CustomerResource.parser.parse_args()
         customer = Customer.find_by_id(id)
         if not customer:
@@ -53,9 +55,11 @@ class CustomerListResource(Resource):
                         help="This field cannot be blank")
 
     def get(self):
+        '''GET all the Customers'''
         return {'customer' :  list(map(lambda customer: customer.json(), Customer.query.all()))}
 
     def post(self):
+        '''CREATE a new Product in the database'''
         data = CustomerResource.parser.parse_args()
         customer = Customer(data['first_name'], data['last_name'], data['address'])
         customer.save_to_db()
@@ -64,6 +68,7 @@ class CustomerListResource(Resource):
 
 class CustomerOrderResource(Resource):
     def get(self, id):
+        '''GETs all the orders placed by a Customer'''
         customer_order = Customer.find_by_id(id)
         return{'customer_order': list(map(lambda customer_order: customer_order.json(), customer_order.orders))}
 
@@ -85,7 +90,7 @@ class CustomersOrdersResource(Resource):
             customer_order = {
                 'customer_id' :int(row[0]),
                 'customer_name' : str(row[1]), 'category_id': int(row[2]),
-                'category_name': str(row[3]) , 'quantity' :int(row[4]) }
+                'category_name': str(row[3]) , 'quantity' :round(int(row[4]),2) }
             customers_orders.append(customer_order)
 
         return customers_orders

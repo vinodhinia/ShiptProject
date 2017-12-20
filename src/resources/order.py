@@ -13,6 +13,7 @@ class OrderResource(Resource):
     parser.add_argument('customer_id')
 
     def get(self, id):
+        '''GET order by ID'''
         order  = Order.find_by_id(id)
         if order:
             return order.json()
@@ -29,9 +30,11 @@ class OrderListResource(Resource):
     parser.add_argument('customer_id')
 
     def get(self):
+        '''GET all the orders in database'''
         return {'order' :  list(map(lambda order: order.json(), Order.query.all()))}
 
     def post(self):
+        '''CREATE a new Product instance in the database'''
         order_request = request.json['orders']
         order = Order(order_request['status'], order_request['date'], order_request['customer_id'])
         product_list = order_request['products']
@@ -42,6 +45,5 @@ class OrderListResource(Resource):
             order_product.product = product
             order.products.append(order_product)
         order.save_to_db()
-        # import pdb;pdb.set_trace()
 
         return {'message': 'Order created successfully'}
