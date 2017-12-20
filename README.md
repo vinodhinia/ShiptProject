@@ -6,8 +6,6 @@
   - app.py
 - tests
 
-
-
 **seed**
 - Contains the sample data to populate the database
 
@@ -22,17 +20,16 @@
   - Customer
     - http://localhost/customers - GET all the Customers in the database. POST/CREATE a Customer in the database
     - http://localhost/customer/{id} - GET Customer by Id.
+    - http://localhost/customer/{id}/orders GETs all the Orders placed by the customer
   - Products
-    - http://localhost/products - GET all the products in the database
-    - http://localhost/product/{id} - GET Product by Id. POST/CREATE a Product in the database
+    - http://localhost/products - GET all the products in the database. POST/CREATE a Product in the database
+    - http://localhost/product/{id} - GET Product by Id.
   - Orders
     - http://localhost/orders - GET all the Orders in the database. POST/CREATE a Order in the database.
     - http://localhost/order/{id} - GET Order by Id.
-  - CustomerOrders
-    - http://localhost/customer/{id}/orders GETs all the Orders placed by the customer
   - All Customers Orders
     - http://localhost/customers/orders/ GETs all the orders placed by all the customers.
-  - Aggregate of Products sold grouped by category
+  - Analytics
     - http://localhost/aggregate/product?from_date={}&to_date={}&breakdown_by={} GETs the aggregate of all the products by category.
 
 **Additional Questions**
