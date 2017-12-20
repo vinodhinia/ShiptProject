@@ -1,5 +1,5 @@
 ## Project Host URL ##
-[Host](http://ec2-52-41-196-53.us-west-2.compute.amazonaws.com/)
+[Host](http://ec2-52-41-196-53.us-west-2.compute.amazonaws.com/orders)
 
 ## API Documentation ##
 [Documentation](https://documenter.getpostman.com/view/1637657/shipttakehomeproject/7LkgPTD)
