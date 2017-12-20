@@ -17,17 +17,17 @@
 **app.py**
 - Contains the URL endpoints.
   - Categories
-    - http://localhost/categories - GET all the Categories in the database
-    - http://localhost/category/id - GET Category by Id. POST/CREATE a Category in the database
+    - http://localhost/categories - GET all the Categories in the database.POST/CREATE a Category in the database
+    - http://localhost/category/{id} - GET Category by Id.
   - Customer
-    - http://localhost/products - GET all the Customers in the database
-    - http://localhost/product/id - GET Customer by Id. POST/CREATE a Customer in the database
+    - http://localhost/customers - GET all the Customers in the database. POST/CREATE a Customer in the database
+    - http://localhost/customer/id - GET Customer by Id.
   - Products
     - http://localhost/products - GET all the products in the database
     - http://localhost/product/id - GET Product by Id. POST/CREATE a Product in the database
   - Orders
-    - http://localhost/products - GET all the Orders in the database
-    - http://localhost/product/id - GET Order by Id. POST/CREATE a Order in the database
+    - http://localhost/orders - GET all the Orders in the database. POST/CREATE a Order in the database.
+    - http://localhost/order/id - GET Order by Id.
   - CustomerOrders
     - http://localhost/customer/{id}/orders GETs all the Orders placed by the customer
   - All Customers Orders
