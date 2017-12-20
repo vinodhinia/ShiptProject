@@ -39,7 +39,7 @@
   - Analytics
     - http://localhost/aggregate/product?from_date={}&to_date={}&breakdown_by={} GETs the aggregate of all the products by category.
 
-#####Additional Questions#####
+##### Additional Questions #####
 - **We want to give customers the ability to create lists of products for one-click ordering of bulk items. How would you design the tables, what are the pros and cons of your approach?**
   - One Click ordering speeds up the online shopping process. It remembers the payment and shipping information.
   - Basically PaymentMethod table and Address table will be created to persist the payment method details and address information of the cuctomers.
